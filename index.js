@@ -21,7 +21,8 @@ app.use(express.json());
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     // All console.log, console.warn, and console.error statements removed throughout the file for production readiness.
-  })
+    console.log('MongoDB connected successfully');
+})
   .catch(err => {
     // All console.log, console.warn, and console.error statements removed throughout the file for production readiness.
   });
