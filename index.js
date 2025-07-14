@@ -7,7 +7,7 @@ const http = require('http'); // Node.js built-in HTTP module
 const { Chess } = require('chess.js'); // Chess game logic library (npm install chess.js)
 const mongoose = require('mongoose');
 const cors = require('cors');
-require('dotenv').config({ path: './config.env' });
+require('dotenv').config();
 
 // Initialize Express app and HTTP server
 const app = express();
@@ -24,6 +24,7 @@ mongoose.connect(process.env.MONGODB_URI)
     console.log('MongoDB connected successfully');
 })
   .catch(err => {
+    console.error('MongoDB connection error:', err);
     // All console.log, console.warn, and console.error statements removed throughout the file for production readiness.
   });
 
