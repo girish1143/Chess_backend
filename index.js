@@ -7,6 +7,7 @@ const http = require('http'); // Node.js built-in HTTP module
 const { Chess } = require('chess.js'); // Chess game logic library (npm install chess.js)
 const mongoose = require('mongoose');
 const cors = require('cors');
+require('dotenv').config(); // For environment variables (npm install dotenv)
 const nodemailer = require('nodemailer'); // For sending emails (npm install nodemailer)
 require('dotenv').config({ path: './config.env' });
 
