@@ -7,15 +7,53 @@ const http = require('http'); // Node.js built-in HTTP module
 const { Chess } = require('chess.js'); // Chess game logic library (npm install chess.js)
 const mongoose = require('mongoose');
 const cors = require('cors');
-require('dotenv').config();
+const nodemailer = require('nodemailer'); // For sending emails (npm install nodemailer)
+require('dotenv').config({ path: './config.env' });
 
 // Initialize Express app and HTTP server
 const app = express();
 const server = http.createServer(app);
 
-// Middleware
+// Middleware yhi k
 app.use(cors());
 app.use(express.json());
+
+const password = process.env.Password; // Get password from environment variable
+const email = process.env.Email; 
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: email,       // your Gmail address
+    pass: password,          // 16-digit app password from Google
+  },
+});
+
+app.post("/send-email", (req, res) => {
+    // Extract data from request body
+    const { name, email: senderEmail, subject, message } = req.body; 
+    
+    // Compose the email content
+    const mailOptions = {
+      from: email, // Use the email from environment variable
+      to: email, // Send to the same email address
+      subject: `Contact Form: ${subject}`,
+      text: `
+        Name: ${name}
+        Email: ${senderEmail}
+        Subject: ${subject}
+        Message: ${message}
+      `,
+    };      
+    
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error:", error);
+        return res.status(500).send("Error sending email");
+      }
+      res.status(200).send("Email sent successfully");
+    });
+});
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
